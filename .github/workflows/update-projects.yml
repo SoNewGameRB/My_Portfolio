@@ -1,0 +1,26 @@
+name: Update GitHub Projects JSON
+
+on:
+  schedule:
+    - cron: "0 0 * * *"  # 每天 UTC 00:00（台灣時間 08:00）自動執行
+  workflow_dispatch:  # 允許手動執行
+
+jobs:
+  update-json:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 取得 Repository
+        uses: actions/checkout@v3
+
+      - name: 抓取 GitHub API 並更新 `projects.json`
+        run: |
+          curl -s "https://api.github.com/users/sonewgamerb/repos" | jq '[.[] | { name: .name, description: .description, url: .html_url }]' > public/data/projects.json
+
+      - name: 提交更新到 GitHub
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add public/data/projects.json
+          git commit -m "自動更新 projects.json"
+          git push
+        continue-on-error: true  # 如果沒有變更，避免報錯
