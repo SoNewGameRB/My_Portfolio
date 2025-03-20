@@ -1,7 +1,7 @@
 <template>
     <section class="headers" @mousemove="moveEyes">
       <div class="face">
-        <img class="character" src="../assets/images/測試.png" alt="人物" />
+        <img class="character" src="/public/images/測試.PNG" alt="人物" />
         <div class="eyes">
           <div class="eye">
             <div class="pupil" ref="leftPupil"></div>
